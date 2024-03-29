@@ -10,6 +10,7 @@ builder.Services.AddDbContext<NoteDBContext>(options =>
         options.UseInMemoryDatabase("DbNotes"));
 
 builder.Services.AddTransient<UserServices>();
+builder.Services.AddScoped<CategoryService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
