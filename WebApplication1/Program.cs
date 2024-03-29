@@ -11,6 +11,7 @@ builder.Services.AddDbContext<NoteDBContext>(options =>
 
 builder.Services.AddTransient<UserServices>();
 builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<NoteService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

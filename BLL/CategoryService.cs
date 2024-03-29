@@ -25,15 +25,16 @@ namespace BLL
                 return e.Message;
             }
         }
-        public List<Category> GetCategory()
+        public List<Category> GetCategory(int userId)
         {
             try
             {
-                var category = noteDBContext.Categories.ToList();
-                return category;
+                var categories = noteDBContext.Categories.Where(c => c.IdUser == userId).ToList();
+                return categories;
             }
             catch (Exception e)
             {
+              
                 return null;
             }
         }

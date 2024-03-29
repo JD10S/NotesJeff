@@ -25,7 +25,20 @@ namespace BLL
                 return e.Message;
             }
         }
-       
+
+        public List<Category> GetCategory(int userId)
+        {
+            try
+            {
+                var categories = noteDBContext.Categories.Where(c => c.IdUser == userId).ToList();
+                return categories;
+            }
+            catch (Exception e)
+            {
+
+                return null;
+            }
+        }
         public string DeleteNote(int id)
         {
             try
