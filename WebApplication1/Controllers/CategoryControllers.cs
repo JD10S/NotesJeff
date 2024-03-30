@@ -14,10 +14,15 @@ namespace WebApplication1.Controllers
             _categoryService = categoryService;
         }
 
-        [HttpGet]
-        public IActionResult GetCategory()
+        [HttpGet("{userId}")]
+        public IActionResult GetCategory(int userId)
         {
-            return Ok(_categoryService.GetCategory());
+            var categories = _categoryService.GetCategory(userId);
+            if (categories == null)
+            {
+                return NotFound(); 
+            }
+            return Ok(categories);
         }
 
         [HttpPost]
