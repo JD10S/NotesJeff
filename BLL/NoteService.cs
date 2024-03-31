@@ -18,7 +18,7 @@ namespace BLL
             {
                 noteDBContext.Add(note);
                 noteDBContext.SaveChanges();
-                return $"{note.Description} Nota Añadida";
+                return $"{note.Title} Nota Añadida";
             }
             catch (Exception e)
             {
@@ -26,19 +26,32 @@ namespace BLL
             }
         }
 
-        public List<Category> GetCategory(int userId)
+        public List<Note> GetNote(int noteId)
         {
             try
             {
-                var categories = noteDBContext.Categories.Where(c => c.IdUser == userId).ToList();
-                return categories;
+                var note = noteDBContext.Notes.Where(c => c.IdCategory == noteId).ToList();
+                return note;
             }
             catch (Exception e)
             {
 
                 return null;
             }
-        }   
+        }
+        public string UpdateNote(Note note)
+        {
+            try
+            {
+                noteDBContext.Update(note);
+                noteDBContext.SaveChanges();
+                return $"{note.Title} fue Modificado correctamente";
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
         public string DeleteNote(int id)
         {
             try
@@ -46,7 +59,7 @@ namespace BLL
                 var note = noteDBContext.Notes.FirstOrDefault(x => x.Id == id);
                 noteDBContext.Remove(note);
                 noteDBContext.SaveChanges();
-                return $"{note.Description} Nota Eliminada correctamente";
+                return $"{note.Title} Nota Eliminada correctamente";
             }
             catch (Exception e)
             {
