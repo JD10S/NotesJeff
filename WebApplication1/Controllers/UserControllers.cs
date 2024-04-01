@@ -20,7 +20,8 @@ namespace WebApplication1.Controllers
         {
             return Ok(_userServices.GetUsers());
         }
-        [HttpGet("{IdCategory}")]
+
+        [HttpGet("GetNotesCategoriesId")]
         public IActionResult GetNotesCategoriesId(int IdCategory)
         {
             var notes = _userServices.GetNotesCategoriesId(IdCategory);
@@ -31,7 +32,7 @@ namespace WebApplication1.Controllers
             return Ok(notes);
         }
 
-        [HttpGet("{IdUser}")]
+        [HttpGet("GetCategoriesUserId")]
         public IActionResult GetCategoriesUserId(int IdUser)
         {
             var categories = _userServices.GetCategoriesUserId(IdUser);
@@ -42,7 +43,7 @@ namespace WebApplication1.Controllers
             return Ok(categories);
         }
 
-        [HttpPost]
+        [HttpPost("loguin")]
         public IActionResult loguin(string userName, string password) 
         {
             var user = _userServices.loguin(userName, password);
