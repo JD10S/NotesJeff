@@ -20,6 +20,41 @@ namespace WebApplication1.Controllers
         {
             return Ok(_userServices.GetUsers());
         }
+        [HttpGet("{IdCategory}")]
+        public IActionResult GetNotesCategoriesId(int IdCategory)
+        {
+            var notes = _userServices.GetNotesCategoriesId(IdCategory);
+            if (notes == null)
+            {
+                return NotFound();
+            }
+            return Ok(notes);
+        }
+
+        [HttpGet("{IdUser}")]
+        public IActionResult GetCategoriesUserId(int IdUser)
+        {
+            var categories = _userServices.GetCategoriesUserId(IdUser);
+            if (categories == null)
+            {
+                return NotFound();
+            }
+            return Ok(categories);
+        }
+
+        [HttpPost]
+        public IActionResult loguin(string userName, string password) 
+        {
+            var user = _userServices.loguin(userName, password);
+            if (user != null)
+            {
+                return Ok("Inicio de sesión exitoso");
+            }
+            else
+            {
+                return BadRequest("Nombre de usuario o contraseña incorrectos");
+            }
+        }
 
         [HttpPost]
         public IActionResult AddUser(string userName, string password)

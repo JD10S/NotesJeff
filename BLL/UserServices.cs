@@ -1,10 +1,12 @@
-﻿    using DAL;
-    using Entity;
+﻿using DAL;
+using Entity;
 
 namespace BLL
 {
     public class UserServices
+
     {
+      
         private readonly NoteDBContext noteDBContext;
 
         public UserServices(NoteDBContext noteDBContext)
@@ -67,6 +69,51 @@ namespace BLL
                 return e.Message;
             }
         }
+        public User loguin(string username, string password)
+        {
+            try
+            {
+                var user = noteDBContext.Users.FirstOrDefault(u => u.UserName == username && u.Password == password);
+                if (user == null)
+                {
+                    return null;
+                }
+                return user;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return null;
+            }
+        }
+        public List<Category> GetCategoriesUserId(int userId)
+        {
+            try
+            {
+                var categories = noteDBContext.Categories
+                    .Where(c => c.IdUser == userId)
+                    .ToList();
+                return categories;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
 
+        public List<Note> GetNotesCategoriesId(int userId)
+        {
+            try
+            {
+                var notes = noteDBContext.Notes
+                    .Where(c => c.IdCategory == userId)
+                    .ToList();
+                return notes;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }
