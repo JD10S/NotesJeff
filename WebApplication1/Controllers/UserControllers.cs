@@ -1,6 +1,11 @@
 using BLL;
 using Entity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.Configuration;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace WebApplication1.Controllers
 {
@@ -9,10 +14,12 @@ namespace WebApplication1.Controllers
     public class UserControllers : ControllerBase
     {
         private readonly UserServices _userServices;
+        private readonly IConfiguration _configuration;
 
-        public UserControllers(UserServices userServices)
+        public UserControllers(UserServices userServices, IConfiguration configurations)
         {
-            _userServices = userServices;   
+            _userServices = userServices;
+            _configuration = configurations;
         }
 
         [HttpGet]
@@ -49,7 +56,26 @@ namespace WebApplication1.Controllers
             var user = _userServices.loguin(userName, password);
             if (user != null)
             {
-                return Ok("Inicio de sesión exitoso");
+                var authClaims = new List<Claim>
+                    {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    };
+                //var value = _configuration.GetSection("JWT").GetSection("SecretKey").Value; 
+                
+                var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JWT").GetSection("SecretKey").Value));
+                var token = new JwtSecurityToken(
+                    issuer: _configuration.GetSection("JWT").GetSection("ValidIssuer").Value,
+                    audience: _configuration.GetSection("JWT").GetSection("ValidAudience").Value,
+                    expires: DateTime.Now.AddHours(3),
+                    claims: authClaims,
+                    signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+                    );
+                return Ok(new
+                {
+                    token = new JwtSecurityTokenHandler().WriteToken(token),
+                    user
+                });
+
             }
             else
             {

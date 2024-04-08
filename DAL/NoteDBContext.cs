@@ -3,12 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL
 {
-    public class NoteDBContext: DbContext
-    {
-        public NoteDBContext():base()
-        {
-            
-        }
+    public class NoteDBContext: DbContext{
+
+
         public NoteDBContext(DbContextOptions<NoteDBContext> options) : base(options)
         {
         }
