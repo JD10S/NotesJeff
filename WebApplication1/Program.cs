@@ -11,13 +11,14 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//var env = builder.Configuration;
 var services = builder.Services;
 var configuration = builder.Configuration;
 
 
 // Add services to the container.
 
-
+builder.Services.AddCors();
 builder.Services.AddDbContext<NoteDBContext>(options =>
         options.UseInMemoryDatabase("DbNotes"));
 
@@ -81,8 +82,22 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+
+    app.UseCors(options =>
+    {
+        options.WithOrigins("http://localhost:5173");
+        options.AllowAnyMethod();
+        options.AllowAnyHeader();
+    });
+   
+
+
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Service API V1");
+    });
 }
 
 app.UseHttpsRedirection();
